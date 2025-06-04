@@ -15,6 +15,7 @@ import {
 } from '@chakra-ui/react'
 import { MoonIcon, SunIcon, ChevronDownIcon } from '@chakra-ui/icons'
 import { CartWidget } from "../CartWidget"
+import { useAuth } from '../../hooks/useAuth';
  
 const FAKE_CATEGORIES = [
   {
@@ -43,6 +44,9 @@ const FAKE_CATEGORIES = [
 
 export const NavBar = () => {
     const { colorMode, toggleColorMode } = useColorMode();
+
+    const { logout } = useAuth();
+
     return (
         <>
             <Box bg={useColorModeValue("gray.100", "gray.900")} px={4}>
@@ -95,7 +99,7 @@ export const NavBar = () => {
                                     <MenuDivider />
                                     <MenuItem>Your Servers</MenuItem>
                                     <MenuItem>Account Settings</MenuItem>
-                                    <MenuItem>Logout</MenuItem>
+                                    <MenuItem onClick={() => {logout()}}>Logout</MenuItem>
                                 </MenuList>
                             </Menu>
                         </Stack>
