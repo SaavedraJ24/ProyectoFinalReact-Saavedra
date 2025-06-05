@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router";
 import { Login, Signup } from "../pages";
 import { ProtectedRoute } from "../components";
-
+import { MainLayout } from "../layout";
 const routes = [
     {
         path: "./",

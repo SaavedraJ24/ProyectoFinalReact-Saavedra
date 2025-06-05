@@ -1,14 +1,18 @@
 import { ChakraProvider } from "@chakra-ui/react"
-import { NavBar } from "./components"
+import { RouterProvider } from "react-router/dom"
+import { router } from "./routes"
+import { useAuth } from "./hooks/useAuth"
 
 
 const App = () => {
+  const { user } = useAuth()
+  console.log(user);
   return (
     <ChakraProvider>
-      <NavBar />
+      <RouterProvider router={router} />
     </ChakraProvider>
   )
 }
 
 
-export default App
+export default App();
