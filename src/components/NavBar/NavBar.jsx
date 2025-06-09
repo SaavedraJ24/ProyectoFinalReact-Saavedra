@@ -16,35 +16,11 @@ import {
 import { MoonIcon, SunIcon, ChevronDownIcon } from '@chakra-ui/icons'
 import { CartWidget } from "../CartWidget"
 import { useAuth } from '../../hooks/useAuth';
- 
-const FAKE_CATEGORIES = [
-  {
-    id: 1,
-    label: "Sports",
-  },
-  {
-    id: 2,
-    label: "IT",
-  },
-  {
-    id: 3,
-    label: "Home",
-  },
-  {
-    id: 4,
-    label: "Furnitures",
-  },
-  {
-    id: 5,
-    label: "Tools",
-  },
-];
-
-
+import { useCategories } from '../../hooks';
 
 export const NavBar = () => {
     const { colorMode, toggleColorMode } = useColorMode();
-
+    const { categories, loading } = useCategories();
     const { logout } = useAuth();
 
     return (
@@ -56,10 +32,10 @@ export const NavBar = () => {
                         <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
                             Categories
                         </MenuButton>
-                        <MenuList>
-                            {FAKE_CATEGORIES.map((category) => {
-                                return <MenuItem key={category.id}>{category.label}</MenuItem>;
-                            })}
+                        <MenuList overflowY={'scroll'} height={'350px'}>
+                            {!loading ? categories.map((category) => {
+                                return <MenuItem key={category.slug}>{category.name}</MenuItem>;
+                            }): null }
                         </MenuList>
                     </Menu>
 

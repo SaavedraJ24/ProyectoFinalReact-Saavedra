@@ -6,3 +6,4 @@ export * from "./ItemListContainer";
 export * from "./NavBar";
 export * from "./ProtectedRoute";
 export * from "./ProductCard";
+export * from "./Counter";

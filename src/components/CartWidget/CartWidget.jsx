@@ -1,7 +1,10 @@
 import { Flex } from "@chakra-ui/react";
 import { FaCartShopping } from "react-icons/fa6";
+import { useProductStore } from "../../store/useProductStore";
 
 export const CartWidget = () => {
+  const totalItems = useProductStore((state) => state.getTotalItems());
+  
   return (
     <Flex
       alignItems={"center"}
@@ -11,7 +14,7 @@ export const CartWidget = () => {
       width={"50px"}
     >
       <FaCartShopping />
-      <div>0</div>
+      <div>{totalItems}</div>
     </Flex>
   );
 };
