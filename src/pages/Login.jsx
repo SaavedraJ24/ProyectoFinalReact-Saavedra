@@ -1,37 +1,52 @@
-import { Box, VStack, FormControl, Text, Input, useToast } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
-import { useAuth } from '../hooks/useAuth';
-import { useNavigate, Link } from 'react-router';
+import React, { useEffect, useState } from "react"
+import {
+    Box,
+    Button,
+    Flex,
+    FormControl,
+    FormLabel,
+    Heading,
+    Input,
+    Text,
+    VStack,
+    useToast,
+} from "@chakra-ui/react"
+import { useAuth, useTitle } from "../hooks";
+import { Link, useNavigate } from "react-router-dom";
 
 export const Login = () => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    useTitle({title: "Login"});
+    const [ email, setEmail ] = useState("");
+    const [ password, setPassword ] = useState("");
 
-    const {user, login} = useAuth();
+    const { user, login } = useAuth();
     const toast = useToast();
     const navigate = useNavigate();
+
     useEffect(() => {
         if (user) {
-            navigate("/", { replace: true });
+            console.log(user);
+            navigate('/', { replace: true })
         }
     }, [user, navigate]);
-    const handleSubmit = async(e) => {
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             await login(email, password);
             toast({
-                title: "Usuario logeado",
-                description: "Se inició sesión correctamente.",
+                title: "Successful login",
+                description: "Logged in successfully.",
                 status: "success",
-                duration: 3000,
+                duration: 4000,
                 isClosable: true,
             })
         } catch (error) {
             toast({
-                title: "Error",
-                description: "Se inició sesión correctamente.",
-                status: "success",
-                duration: 3000,
+                title: "Unsuccessful login",
+                description: "Email or password are incorrect.",
+                status: "error",
+                duration: 4000,
                 isClosable: true,
             })
         }
@@ -39,36 +54,40 @@ export const Login = () => {
     }
 
     return (
-        <Box maxW={md} mx="auto" mt={8} p={6} borderWidth={1} borderRadius="lg">
+        <Box maxW="md" mx="auto" mt={8} p={7} borderWidth={1} borderRadius="lg">
             <form onSubmit={handleSubmit}>
-                <VStack spacing={6}>
-                    <Text>Iniciar sesión</Text>
+                <VStack spacing={"10px"}>
+                    <Heading as={"h2"} size="xl" fontWeight={"600"}>Login</Heading>
                     <FormControl isRequired>
-                        <Text>Email:</Text>
-                        <Input
-                            type='email' 
+                        <FormLabel>Email:</FormLabel>
+                        <Input type="email"
                             value={email}
-                            placeholder='example@gmail.com'
                             onChange={(e) => {
                                 setEmail(e.target.value);
                             }}
+                            placeholder="example@gmail.com"
+                            pattern=".+@gmail\.com"
+                            title="Please provide only a gmail address"
                         />
                     </FormControl>
-                    <FormControl>
-                        <Text>Password:</Text>
-                        <Input
-                            type='password'
+                    <FormControl isRequired>
+                        <FormLabel>Password:</FormLabel>
+                        <Input type="password"
                             value={password}
-                            placeholder='Por favor, ingrese su contraseña'
                             onChange={(e) => {
                                 setPassword(e.target.value);
                             }}
-                        />
+                            placeholder="************"
+                            pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                            title="Must contain at least 8 characters, including 1 uppercase, 1 lowercase, and 1 number" />
                     </FormControl>
-                    <Button type="submit">Iniciar sesión</Button>
+                    <Button type="submit" colorScheme="teal">Enter</Button>
                 </VStack>
             </form>
-            <Text mt={'18px'}>No estás registrado? <Link to={'/signup'}>Hazlo aquí</Link></Text>
+            <Flex mt={'0.2rem'} justifyContent={'flex-start'} gap={'0.4rem'}>
+                <Text>Do you not have an account?</Text>
+                <Link to={'/signup'}>Signup here!</Link>
+            </Flex>
         </Box>
     )
 }

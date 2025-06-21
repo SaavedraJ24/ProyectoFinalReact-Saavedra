@@ -1,3 +1,5 @@
+import React from 'react';
+import { useCustomHProductsStore, useTitle } from "../hooks";
 import {
   Box,
   Heading,
@@ -11,17 +13,28 @@ import {
   Spacer,
   Divider,
   Image,
+  Button,
 } from "@chakra-ui/react";
 import { MinusIcon, AddIcon, DeleteIcon } from "@chakra-ui/icons";
-import { useCustomHProductsStore } from "../hooks";
+import { useNavigate } from "react-router-dom";
 
 export const Cart = () => {
-  const { cartState, addItem, removeItem, deleteProductFromCart, total } =
-    useCustomHProductsStore();
+  
+  const {
+    cartState,
+    addItem,
+    removeItem,
+    deleteProductFromCart,
+    total
+  } = useCustomHProductsStore();
+
+  const navigate = useNavigate();
 
   const handleDeleteItem = (itemId) => {
     deleteProductFromCart(itemId);
   };
+
+  useTitle({ title: "Cart" });
 
   return (
     <Box p={6} maxW="800px" mx="auto" h={"90vh"}>
@@ -100,6 +113,7 @@ export const Cart = () => {
             </Text>
             <Spacer />
           </Flex>
+          <Button marginTop={'1.2rem'} onClick={() => { navigate("/checkout") } } variant={'outline'} colorScheme="teal">Confirm purchase</Button>
         </VStack>
       )}
     </Box>
