@@ -1,15 +1,27 @@
+import React from 'react';
 import { useEffect, useState } from "react";
-import { getCategories } from "../services";
+import { collection , getDocs } from 'firebase/firestore';
+import { db } from "../services";
 
 export const useCategories = () => {
-    const [categories, setCategories] = useState();
-    const [loading, setLoading] = useState(true);
-    useEffect(() => {
-        getCategories().then((res) => {
-            setCategories(res.data);
-        }).catch((error) => console.error(error))
-        .finally(() => setLoading(false))
-    }, []);
-    
-    return { categories, loading };
-}
+  const [categories, setCategories] = useState();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const collectionName = collection(db, "categories");
+    getDocs(collectionName)
+        .then((snapshot) => {
+            const data = snapshot.docs.map((doc) => ({
+                id: doc.id,
+                ...doc.data(),
+            }))
+            setCategories(data);
+        })
+        .catch((error) => console.error(error))
+        .finally(() => {
+            setLoading(false);
+        });
+}, []);
+
+  return { categories, loading };
+};

@@ -1,6 +1,7 @@
+import React from 'react';
 import { useProductsStore } from "../store";
 
-export const useCustomProductsStore = () => {
+export const useCustomHProductsStore = () => {
     const cartState = useProductsStore((state) => state.cart);
     const addItem = useProductsStore((state) => state.addProductToCart);
     const removeItem = useProductsStore((state) => state.removeProductFromCart);

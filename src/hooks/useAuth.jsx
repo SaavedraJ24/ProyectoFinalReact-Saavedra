@@ -1,32 +1,37 @@
-import { browserLocalPersistence, createUserWithEmailAndPassword, onAuthStateChanged, setPersistence, signInWithEmailAndPassword, signOut } from 'firebase/auth';
-import { auth } from '../services'
-import { useEffect, useState } from 'react';
+import React from 'react';
+import { auth } from "../services"
+import { useEffect, useState } from "react"
+import {
+    browserLocalPersistence,
+    createUserWithEmailAndPassword,
+    onAuthStateChanged,
+    setPersistence,
+    signInWithEmailAndPassword,
+    signOut
+} from "firebase/auth"
 
+setPersistence(auth, browserLocalPersistence);
 
-setPersistence(auth, browserLocalPersistence)
 
 export const useAuth = () => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
-
-    // Validación del user.
     useEffect(() => {
-        const unsuscribe = onAuthStateChanged(auth, (currentUser) => {
+        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
             setUser(currentUser);
             setLoading(false);
         },
-            (error) => setLoading(error)
+            (error) => { setLoading(false) }
         );
-        return() => unsuscribe();
+        
+        return () => unsubscribe;
     }, []);
-
 
     const signup = async (email, password) => {
         try {
-            userCreated = await createUserWithEmailAndPassword(auth, email, password);
+            const userCreated = await createUserWithEmailAndPassword(auth, email, password);
             return userCreated;
-        }
-        catch (error) {
+        } catch (error) {
             throw new Error(error);
         }
     }
@@ -47,8 +52,5 @@ export const useAuth = () => {
             throw error;
         }
     }
-
-
-    return { signup, login , logout , user , loading };
+    return { signup, login, logout, user, loading };
 }
-
