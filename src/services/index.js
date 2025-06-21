@@ -1,2 +1,2 @@
-export * from "./config";
-export * from "./apiCalls";
+export * from './apiCalls';
+export * from './config/firebase';
