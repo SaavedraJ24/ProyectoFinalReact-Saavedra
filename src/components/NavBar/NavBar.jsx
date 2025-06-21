@@ -1,3 +1,4 @@
+import React from 'react';
 import {
     Box,
     Flex,
@@ -15,27 +16,32 @@ import {
 } from '@chakra-ui/react'
 import { MoonIcon, SunIcon, ChevronDownIcon } from '@chakra-ui/icons'
 import { CartWidget } from "../CartWidget"
-import { useAuth } from '../../hooks/useAuth';
-import { useCategories } from '../../hooks';
+import { useAuth, useCategories } from '../../hooks';
+import { Link } from 'react-router-dom';
 
 export const NavBar = () => {
     const { colorMode, toggleColorMode } = useColorMode();
     const { categories, loading } = useCategories();
     const { logout } = useAuth();
-
     return (
         <>
             <Box bg={useColorModeValue("gray.100", "gray.900")} px={4}>
                 <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
-                    <Box>All Sales</Box>
+                    <Box><Link to={`/`}>All Sales</Link></Box>
                     <Menu>
                         <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
                             Categories
                         </MenuButton>
                         <MenuList overflowY={'scroll'} height={'350px'}>
                             {!loading ? categories.map((category) => {
-                                return <MenuItem key={category.slug}>{category.name}</MenuItem>;
-                            }): null }
+                                return (
+                                    <MenuItem key={category.slug}><Link to={`/category/${category.slug}`}>
+                                        {category.name}
+                                    </Link>
+                                    </MenuItem>
+                                );
+                            })
+                                : null}
                         </MenuList>
                     </Menu>
 
@@ -45,7 +51,6 @@ export const NavBar = () => {
                             <Button onClick={toggleColorMode}>
                                 {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
                             </Button>
-
                             <Menu>
                                 <MenuButton
                                     as={Button}
@@ -75,7 +80,7 @@ export const NavBar = () => {
                                     <MenuDivider />
                                     <MenuItem>Your Servers</MenuItem>
                                     <MenuItem>Account Settings</MenuItem>
-                                    <MenuItem onClick={() => {logout()}}>Logout</MenuItem>
+                                    <MenuItem onClick={() => { logout() } }>Logout</MenuItem>
                                 </MenuList>
                             </Menu>
                         </Stack>
