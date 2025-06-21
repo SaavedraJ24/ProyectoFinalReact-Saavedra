@@ -1,8 +1,8 @@
-import { ChakraProvider } from "@chakra-ui/react"
-import { RouterProvider } from "react-router/dom"
-import { router } from "./routes"
-import { useAuth } from "./hooks/useAuth"
-
+import * as React from "react";
+import { ChakraProvider } from "@chakra-ui/react";
+import { RouterProvider } from "react-router-dom";
+import { router } from "./routes";
+import { useAuth } from "./hooks";
 
 const App = () => {
   const { user } = useAuth()
@@ -14,5 +14,4 @@ const App = () => {
   )
 }
 
-
-export default App();
+export default App;
